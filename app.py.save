@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 import os
 
+ source /workspaces/AI-Resume-Screening-System/.venv/bin/activate
 from utils.pdf_parser import extract_text
 from utils.resume_analyzer import analyze_resume
 

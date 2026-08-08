@@ -2,20 +2,83 @@
 <html>
 
 <head>
-    <title>Resume Result</title>
+    <title>AI Resume Analysis</title>
 </head>
 
 <body>
 
-<h1>Resume Uploaded Successfully</h1>
+    <h1>AI Resume Analysis</h1>
 
-<h3>File Name</h3>
+    <h2>{{ filename }}</h2>
 
-<p>{{ filename }}</p>
+    <hr>
 
-<h3>Extracted Resume Text</h3>
+    <h2>ATS Score</h2>
+    <h1>{{ score }}/100</h1>
 
-<pre>{{ resume_text }}</pre>
+    <hr>
+
+    <h2>Skills Detected</h2>
+
+    {% if skills %}
+        <ul>
+            {% for skill in skills %}
+                <li>{{ skill }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No skills detected.</p>
+    {% endif %}
+
+
+    <h2>Resume Sections</h2>
+
+    {% if sections %}
+        <ul>
+            {% for section in sections %}
+                <li>{{ section }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No standard sections detected.</p>
+    {% endif %}
+
+
+    <h2>Strengths</h2>
+
+    {% if strengths %}
+        <ul>
+            {% for strength in strengths %}
+                <li>{{ strength }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No strengths detected.</p>
+    {% endif %}
+
+
+    <h2>Improvements</h2>
+
+    {% if improvements %}
+        <ul>
+            {% for improvement in improvements %}
+                <li>{{ improvement }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No major improvements detected.</p>
+    {% endif %}
+
+
+    <hr>
+
+    <h2>Extracted Resume Text</h2>
+
+    <pre>{{ resume_text }}</pre>
+
+    <br>
+
+    <a href="/">Analyze Another Resume</a>
 
 </body>
 

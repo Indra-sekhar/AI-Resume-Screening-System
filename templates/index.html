@@ -1,24 +1,118 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>AI Resume Screening</title>
+
+    <title>AI Resume Screening System</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 700px;
+            margin: 60px auto;
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 8px;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 220px;
+            padding: 12px;
+            font-size: 14px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
-<h1>AI Resume Screening System</h1>
+<div class="container">
 
-<form action="/upload" method="POST" enctype="multipart/form-data">
+    <h1>AI Resume Screening System</h1>
 
-<input type="file" name="resume">
+    <form
+        action="/upload"
+        method="POST"
+        enctype="multipart/form-data"
+    >
 
-<br><br>
+        <label>
+            Upload Resume
+        </label>
 
-<button type="submit">
-Upload Resume
-</button>
+        <input
+            type="file"
+            name="resume"
+            accept=".pdf"
+            required
+        >
 
-</form>
+
+        <label>
+            Job Description
+        </label>
+
+        <textarea
+            name="job_description"
+            placeholder="Paste the job description here..."
+            required
+        ></textarea>
+
+
+        <button type="submit">
+            Analyze Resume
+        </button>
+
+    </form>
+
+</div>
 
 </body>
+
 </html>

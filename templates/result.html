@@ -1,85 +1,652 @@
+```html
 <!DOCTYPE html>
 <html>
 
 <head>
+
     <title>AI Resume Analysis</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 30px;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        /* Header */
+
+        .header {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .header h1 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .filename {
+            color: #666;
+            margin-bottom: 0;
+        }
+
+        /* Score Cards */
+
+        .score-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .score-card {
+            background: white;
+            padding: 25px 15px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .score-card h2 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 17px;
+        }
+
+        .score {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        /* Sections */
+
+        .section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .section h2 {
+            margin-top: 0;
+        }
+
+        ul {
+            padding-left: 25px;
+            margin-bottom: 0;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Matched Skills */
+
+        .matched {
+            display: inline-block;
+            padding: 8px 12px;
+            margin: 5px;
+            border-radius: 20px;
+            background: #dcfce7;
+        }
+
+        /* Missing Skills */
+
+        .missing {
+            display: inline-block;
+            padding: 8px 12px;
+            margin: 5px;
+            border-radius: 20px;
+            background: #fee2e2;
+        }
+
+        /* Empty State */
+
+        .empty {
+            color: #777;
+        }
+
+        /* Extracted Resume */
+
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.5;
+        }
+
+        /* Button */
+
+        .button {
+            display: inline-block;
+            padding: 12px 20px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .button:hover {
+            background: #1d4ed8;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 900px) {
+
+            .score-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .score-container {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
-    <h1>AI Resume Analysis</h1>
 
-    <h2>{{ filename }}</h2>
+<div class="container">
 
-    <hr>
 
-    <h2>ATS Score</h2>
-    <h1>{{ score }}/100</h1>
+    <!-- ========================= -->
+    <!-- HEADER -->
+    <!-- ========================= -->
 
-    <hr>
+    <div class="header">
 
-    <h2>Skills Detected</h2>
+        <h1>AI Resume Analysis</h1>
 
-    {% if skills %}
-        <ul>
-            {% for skill in skills %}
-                <li>{{ skill }}</li>
+        <p class="filename">
+
+            Resume:
+            <strong>{{ filename }}</strong>
+
+        </p>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- SCORE CARDS -->
+    <!-- ========================= -->
+
+    <div class="score-container">
+
+
+        <!-- Final ATS Score -->
+
+        <div class="score-card">
+
+            <h2>Final ATS Score</h2>
+
+            <div class="score">
+
+                {{ score }}/100
+
+            </div>
+
+        </div>
+
+
+        <!-- Job Match -->
+
+        <div class="score-card">
+
+            <h2>Job Match</h2>
+
+            <div class="score">
+
+                {{ job_match }}%
+
+            </div>
+
+        </div>
+
+
+        <!-- Skills Match -->
+
+        <div class="score-card">
+
+            <h2>Skills Match</h2>
+
+            <div class="score">
+
+                {{ skill_match }}%
+
+            </div>
+
+        </div>
+
+
+        <!-- Keyword Match -->
+
+        <div class="score-card">
+
+            <h2>Keyword Match</h2>
+
+            <div class="score">
+
+                {{ keyword_match }}%
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- RESUME QUALITY -->
+    <!-- ========================= -->
+
+    <div class="section">
+
+        <h2>Resume Quality</h2>
+
+        <p>
+
+            Base ATS Score:
+
+            <strong>
+                {{ base_score }}/100
+            </strong>
+
+        </p>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- MATCHED SKILLS -->
+    <!-- ========================= -->
+
+    <div class="section">
+
+        <h2>Matched Skills</h2>
+
+        {% if matched_skills %}
+
+            {% for skill in matched_skills %}
+
+                <span class="matched">
+
+                    ✓ {{ skill }}
+
+                </span>
+
             {% endfor %}
-        </ul>
-    {% else %}
-        <p>No skills detected.</p>
+
+        {% else %}
+
+            <p class="empty">
+
+                No matching skills detected.
+
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- MISSING SKILLS -->
+    <!-- ========================= -->
+
+    <div class="section">
+
+        <h2>Missing Skills</h2>
+
+        {% if missing_skills %}
+
+            {% for skill in missing_skills %}
+
+                <span class="missing">
+
+                    ✗ {{ skill }}
+
+                </span>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p class="empty">
+
+                No major missing skills detected.
+
+            </p>
+
+        {% endif %}
+
+    </div>
+    <!-- Education Match -->
+
+<div class="section">
+
+    <h2>Education Match</h2>
+
+    <h3>{{ education_match }}%</h3>
+
+    {% if matched_education %}
+
+        <p><strong>Matched:</strong></p>
+
+        {% for item in matched_education %}
+
+            <span class="matched">
+                ✓ {{ item }}
+            </span>
+
+        {% endfor %}
+
     {% endif %}
 
+    {% if missing_education %}
 
-    <h2>Resume Sections</h2>
+        <p><strong>Missing:</strong></p>
 
-    {% if sections %}
-        <ul>
-            {% for section in sections %}
-                <li>{{ section }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No standard sections detected.</p>
+        {% for item in missing_education %}
+
+            <span class="missing">
+                ✗ {{ item }}
+            </span>
+
+        {% endfor %}
+
     {% endif %}
 
+</div>
 
-    <h2>Strengths</h2>
 
-    {% if strengths %}
-        <ul>
-            {% for strength in strengths %}
-                <li>{{ strength }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No strengths detected.</p>
+<!-- Experience / Project Match -->
+
+<div class="section">
+
+    <h2>Experience & Project Match</h2>
+
+    <h3>{{ experience_match }}%</h3>
+
+    {% if matched_experience %}
+
+        <p><strong>Matched:</strong></p>
+
+        {% for item in matched_experience %}
+
+            <span class="matched">
+                ✓ {{ item }}
+            </span>
+
+        {% endfor %}
+
     {% endif %}
 
+    {% if missing_experience %}
 
-    <h2>Improvements</h2>
+        <p><strong>Missing:</strong></p>
 
-    {% if improvements %}
-        <ul>
-            {% for improvement in improvements %}
-                <li>{{ improvement }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No major improvements detected.</p>
+        {% for item in missing_experience %}
+
+            <span class="missing">
+                ✗ {{ item }}
+            </span>
+
+        {% endfor %}
+
     {% endif %}
 
+</div>
 
-    <hr>
 
-    <h2>Extracted Resume Text</h2>
+<!-- Role Requirements -->
 
-    <pre>{{ resume_text }}</pre>
+<div class="section">
 
-    <br>
+    <h2>Role & Soft-Skill Match</h2>
 
-    <a href="/">Analyze Another Resume</a>
+    <h3>{{ role_match }}%</h3>
+
+    {% if matched_role %}
+
+        <p><strong>Matched:</strong></p>
+
+        {% for item in matched_role %}
+
+            <span class="matched">
+                ✓ {{ item }}
+            </span>
+
+        {% endfor %}
+
+    {% endif %}
+
+    {% if missing_role %}
+
+        <p><strong>Missing:</strong></p>
+
+        {% for item in missing_role %}
+
+            <span class="missing">
+                ✗ {{ item }}
+            </span>
+
+        {% endfor %}
+
+    {% endif %}
+
+</div>
+
+    <!-- ========================= -->
+    <!-- DETECTED SKILLS -->
+    <!-- ========================= -->
+
+    <div class="section">
+
+        <h2>Skills Detected in Resume</h2>
+
+        {% if skills %}
+
+            <ul>
+
+                {% for skill in skills %}
+
+                    <li>
+                        {{ skill }}
+                    </li>
+
+                {% endfor %}
+
+            </ul>
+
+        {% else %}
+
+            <p class="empty">
+
+                No skills detected.
+
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- RESUME SECTIONS -->
+    <!-- ========================= -->
+
+    <div class="section">
+
+        <h2>Resume Sections</h2>
+
+        {% if sections %}
+
+            <ul>
+
+                {% for section in sections %}
+
+                    <li>
+                        {{ section }}
+                    </li>
+
+                {% endfor %}
+
+            </ul>
+
+        {% else %}
+
+            <p class="empty">
+
+                No standard sections detected.
+
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- STRENGTHS -->
+    <!-- ========================= -->
+
+    <div class="section">
+
+        <h2>Strengths</h2>
+
+        {% if strengths %}
+
+            <ul>
+
+                {% for strength in strengths %}
+
+                    <li>
+                        {{ strength }}
+                    </li>
+
+                {% endfor %}
+
+            </ul>
+
+        {% else %}
+
+            <p class="empty">
+
+                No strengths detected.
+
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- IMPROVEMENTS -->
+    <!-- ========================= -->
+
+    <div class="section">
+
+        <h2>Improvements</h2>
+
+        {% if improvements %}
+
+            <ul>
+
+                {% for improvement in improvements %}
+
+                    <li>
+                        {{ improvement }}
+                    </li>
+
+                {% endfor %}
+
+            </ul>
+
+        {% else %}
+
+            <p class="empty">
+
+                No major improvements detected.
+
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- EXTRACTED RESUME TEXT -->
+    <!-- ========================= -->
+
+    <div class="section">
+
+        <h2>Extracted Resume Text</h2>
+
+        <pre>{{ resume_text }}</pre>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- ANALYZE ANOTHER -->
+    <!-- ========================= -->
+
+    <a
+        href="/"
+        class="button"
+    >
+
+        Analyze Another Resume
+
+    </a>
+
+
+</div>
+
 
 </body>
 
 </html>
+```

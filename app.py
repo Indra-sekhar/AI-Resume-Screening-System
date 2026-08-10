@@ -20,11 +20,8 @@ os.makedirs(
 
 @app.route("/")
 def home():
-
-    return render_template(
-        "index.html"
-    )
-
+    print("HOME ROUTE: rendering index.html")
+    return render_template("index.html")
 
 @app.route("/upload", methods=["POST"])
 def upload():
